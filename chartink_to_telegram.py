@@ -17,6 +17,18 @@ Alert_Check_Duration = 3
 
 Condition = "( {57960} ( 1 day ago ema ( close,3 ) > 1 day ago ema ( close,8 ) and 2 day ago  ema ( close,3 )<= 2 day ago  ema ( close,8 ) and 1 day ago \"close - 1 candle ago close / 1 candle ago close * 100\" >= 2 and 1 day ago volume >= 100000 and latest close > 1 day ago close ) ) "
 
+ShortTermUptrend = "( {57960} ( 1 day ago ema ( close,3 ) > 1 day ago ema ( close,8 ) and 2 day ago  ema ( close,3 )<= 2 day ago  ema ( close,8 ) and 1 day ago \"close - 1 candle ago close / 1 candle ago close * 100\" >= 2 and 1 day ago volume >= 100000 and latest close > 1 day ago close ) ) "
+
+NayakLion = "( {57960} ( 1 day ago ema ( close,3 ) > 1 day ago ema ( close,8 ) and 2 day ago  ema ( close,3 )<= 2 day ago  ema ( close,8 ) and 1 day ago \"close - 1 candle ago close / 1 candle ago close * 100\" >= 2 and 1 day ago volume >= 100000 and latest close > 1 day ago close ) ) "
+
+RSIDMI = "( {57960} ( 1 day ago ema ( close,3 ) > 1 day ago ema ( close,8 ) and 2 day ago  ema ( close,3 )<= 2 day ago  ema ( close,8 ) and 1 day ago \"close - 1 candle ago close / 1 candle ago close * 100\" >= 2 and 1 day ago volume >= 100000 and latest close > 1 day ago close ) ) "
+
+conditionArray = { "3 ema cross 8 ema":Condition, 
+                   "Short Term Uptrend":ShortTermUptrend, 
+                   "Nayak Lion Scanner":NayakLion, 
+                   "DMI-RSI":RSIDMI 
+                 }
+
 def GetDataFromChartink(payload):
     payload = {'scan_clause': payload}
     
@@ -50,31 +62,47 @@ def SendTelegramFile(FileName):
       
     response = requests.request("POST",Fileurl,files=Documentfile)
     
-def strategy():
-    while True:
-        data = GetDataFromChartink(StrongUpTrend)
-
-        if (len(data)==0):
-            print("The data is empty")
-        else:
-            data = data.sort_values(by='per_chg', ascending=False)
-            print(data)
-
-            #data.to_csv("Chartink_result.csv")
-            #SendTelegramFile("Chartink_result.csv")
-
-            dataMessage = "What Alert: 30Min BB\n"  #Give meaningful alert name here
-            current_time = datetime.datetime.now()
-            dataMessage =  dataMessage + "When:" + str(current_time)
-            HeaderData  =  "Stock               "  + " %Chg     "  + " Close     "  #Customize your header here
-            dataMessage = dataMessage + "\n" + HeaderData
-
-            for ind in data.index:
-                dataMessage = dataMessage + "\n" + str(data['nsecode'][ind]).ljust(20) + "        " +  str(data['per_chg'][ind]) + "      " + str(data['close'][ind])
+def isCorrectTimeToalert():
+    #print("in alert time check")
+    CurrentTime = datetime.datetime.now().hour * 60 + datetime.datetime.now().minute
+    Alert_Start_Time = 9 * 60 + 20
+    Alert_End_Time = 15 * 60 + 50
     
-            print(dataMessage)
+    if (CurrentTime >= Alert_Start_Time and CurrentTime <= Alert_End_Time):        
+        return True
+    else:        
+        return False
+    
+    
+def strategy():
+    while (isCorrectTimeToalert()):
+        for itr in conditionArray:
+            data = GetDataFromChartink(conditionArray[itr])
 
-            SendMessageToTelegram(dataMessage)        
+            if (len(data)==0):
+                print("The data is empty")
+                SendMessageToTelegram("What Alert: " + str(itr) + "\n No data")
+                continue
+            else:
+                data = data.sort_values(by='per_chg', ascending=False)
+                print(data)
+
+                #data.to_csv("Chartink_result.csv")
+                #SendTelegramFile("Chartink_result.csv")
+
+                dataMessage = "What Alert: " + str(itr) + "\n"  #Give meaningful alert name here
+                current_time = datetime.datetime.now()
+                dataMessage =  dataMessage + "When:" + str(current_time)
+                HeaderData  =  "Stock               "  + " %Chg     "  + " Close     "  #Customize your header here
+                dataMessage = dataMessage + "\n" + HeaderData
+
+                for ind in data.index:
+                    dataMessage = dataMessage + "\n" + str(data['nsecode'][ind]).ljust(20) + "        " +  str(data['per_chg'][ind]) + "      " + str(data['close'][ind])
+    
+                print(dataMessage)
+
+                SendMessageToTelegram(dataMessage)        
+            
             
         sleep(Alert_Check_Duration)
         
