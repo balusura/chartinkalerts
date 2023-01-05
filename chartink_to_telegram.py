@@ -51,29 +51,31 @@ def SendTelegramFile(FileName):
     response = requests.request("POST",Fileurl,files=Documentfile)
     
 def strategy():
-    data = GetDataFromChartink(Condition)
+    while True:
+        data = GetDataFromChartink(StrongUpTrend)
 
-    if (len(data)==0):
-        print("The data is empty")
-    else:
-        data = data.sort_values(by='per_chg', ascending=False)
-        print(data)
+        if (len(data)==0):
+            print("The data is empty")
+        else:
+            data = data.sort_values(by='per_chg', ascending=False)
+            print(data)
 
-        #data.to_csv("Chartink_result.csv")
-        #SendTelegramFile("Chartink_result.csv")
+            #data.to_csv("Chartink_result.csv")
+            #SendTelegramFile("Chartink_result.csv")
 
-        dataMessage = "What Alert: 30Min BB\n"  #Give meaningful alert name here
-        current_time = datetime.datetime.now()
-        dataMessage =  dataMessage + "When:" + str(current_time)
-        HeaderData  =  "Stock               "  + " %Chg     "  + " Close     "  #Customize your header here
-        dataMessage = dataMessage + "\n" + HeaderData
+            dataMessage = "What Alert: 30Min BB\n"  #Give meaningful alert name here
+            current_time = datetime.datetime.now()
+            dataMessage =  dataMessage + "When:" + str(current_time)
+            HeaderData  =  "Stock               "  + " %Chg     "  + " Close     "  #Customize your header here
+            dataMessage = dataMessage + "\n" + HeaderData
 
-        for ind in data.index:
-            dataMessage = dataMessage + "\n" + str(data['nsecode'][ind]).ljust(20) + "        " +  str(data['per_chg'][ind]) + "      " + str(data['close'][ind])
+            for ind in data.index:
+                dataMessage = dataMessage + "\n" + str(data['nsecode'][ind]).ljust(20) + "        " +  str(data['per_chg'][ind]) + "      " + str(data['close'][ind])
     
-        print(dataMessage)
+            print(dataMessage)
 
-        SendMessageToTelegram(dataMessage)        
+            SendMessageToTelegram(dataMessage)        
+            
         sleep(Alert_Check_Duration)
         
 if __name__ == '__main__':  
