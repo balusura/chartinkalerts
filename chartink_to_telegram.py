@@ -15,15 +15,15 @@ Alert_Check_Duration = 3
 
 #You need to copy paste condition in below mentioned Condition variable
 
-Condition = "( {57960} ( 1 day ago ema ( close,3 ) > 1 day ago ema ( close,8 ) and 2 day ago  ema ( close,3 )<= 2 day ago  ema ( close,8 ) and 1 day ago \"close - 1 candle ago close / 1 candle ago close * 100\" >= 2 and 1 day ago volume >= 100000 and latest close > 1 day ago close ) ) "
+GemSwing = "( {cash} ( latest close > latest open and 1 day ago close > 1 day ago open and latest ema( close,15 ) > latest sma( close,50 ) and latest macd signal( 26,12,9 ) < latest macd line( 26,12,9 ) and latest volume > 100000 and latest close > latest ema( close,15 ) and latest close > 1 day ago close and latest adx di positive( 14 ) > 20 and latest rsi( 14 ) > 40 and latest close <= latest ema( close,15 ) * 1.07 and latest close > 12 months ago close and latest adx di positive( 14 ) > latest adx di negative( 14 ) and latest macd line( 26,12,9 ) > 0 and latest open * 1.01 < latest close ) ) "
 
-ShortTermUptrend = "( {57960} ( 1 day ago ema ( close,3 ) > 1 day ago ema ( close,8 ) and 2 day ago  ema ( close,3 )<= 2 day ago  ema ( close,8 ) and 1 day ago \"close - 1 candle ago close / 1 candle ago close * 100\" >= 2 and 1 day ago volume >= 100000 and latest close > 1 day ago close ) ) "
+ShortTermUptrend = "( {cash} ( latest close >= 1 day ago max( 20 , latest high ) and latest volume >= latest sma( volume,20 ) and latest close > 50 and latest volume > 1.3 * 1 day ago volume and latest cci( 20 ) >= 200 ) )"
 
-NayakLion = "( {57960} ( 1 day ago ema ( close,3 ) > 1 day ago ema ( close,8 ) and 2 day ago  ema ( close,3 )<= 2 day ago  ema ( close,8 ) and 1 day ago \"close - 1 candle ago close / 1 candle ago close * 100\" >= 2 and 1 day ago volume >= 100000 and latest close > 1 day ago close ) ) "
+NayakLion = "( {cash} ( latest close > latest upper bollinger band( 20 , 2 ) and 1 day ago  close <= 1 day ago  upper bollinger band( 20 , 2 ) and weekly close > weekly upper bollinger band( 20 , 2 ) and 1 week ago  close <= 1 week ago  upper bollinger band( 20 , 2 ) and monthly close > monthly upper bollinger band( 20 , 2 ) and 1 month ago  close <= 1 month ago  upper bollinger band( 20 , 2 ) and latest volume > 100000 ) )"
 
-RSIDMI = "( {57960} ( 1 day ago ema ( close,3 ) > 1 day ago ema ( close,8 ) and 2 day ago  ema ( close,3 )<= 2 day ago  ema ( close,8 ) and 1 day ago \"close - 1 candle ago close / 1 candle ago close * 100\" >= 2 and 1 day ago volume >= 100000 and latest close > 1 day ago close ) ) "
+RSIDMI = "( {cash} ( latest adx di positive( 14 ) >= latest adx di negative( 14 ) and latest adx di positive( 14 ) >= 20 and 1 day ago rsi( 14 ) > 65 and 2 day ago  rsi( 14 ) <= 65 and latest close > 200 and latest close > 1 day ago close ) )"
 
-conditionArray = { "3 ema cross 8 ema":Condition, 
+conditionArray = { "GEM Swing Scanner":GemSwing, 
                    "Short Term Uptrend":ShortTermUptrend, 
                    "Nayak Lion Scanner":NayakLion, 
                    "DMI-RSI":RSIDMI 
@@ -66,7 +66,7 @@ def isCorrectTimeToalert():
     #print("in alert time check")
     CurrentTime = datetime.datetime.now().hour * 60 + datetime.datetime.now().minute
     Alert_Start_Time = 9 * 60 + 20
-    Alert_End_Time = 15 * 60 + 50
+    Alert_End_Time = 19 * 60 + 50
     
     if (CurrentTime >= Alert_Start_Time and CurrentTime <= Alert_End_Time):        
         return True
