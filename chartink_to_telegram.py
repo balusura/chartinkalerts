@@ -76,7 +76,7 @@ def isCorrectTimeToalert():
     
     
 def strategy():
-    while (isCorrectTimeToalert()):
+    while (True):
         for itr in conditionArray:
             data = GetDataFromChartink(conditionArray[itr])
 
