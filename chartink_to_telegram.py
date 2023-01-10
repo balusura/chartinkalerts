@@ -63,7 +63,7 @@ def SendTelegramFile(FileName):
     response = requests.request("POST",Fileurl,files=Documentfile)
     
 def isCorrectTimeToalert():
-    #print("in alert time check")
+    print("in alert time check")
     CurrentTime = datetime.datetime.now().hour * 60 + datetime.datetime.now().minute
     Alert_Start_Time = 9 * 60 + 20
     Alert_End_Time = 19 * 60 + 50
