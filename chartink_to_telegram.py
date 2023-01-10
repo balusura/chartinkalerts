@@ -11,7 +11,7 @@ TelegramBotCredential = '5963732843:AAGhk6iUG_r5-AsN7m16RSbm7SOK_JUepMc'
 ReceiverTelegramID = '882232390' #my personal id
 
 #you can set this variable as per your requirment, its 30 minute in gap of 30 second it will check and send the alert
-Alert_Check_Duration = 3
+Alert_Check_Duration = 15*60
 
 #You need to copy paste condition in below mentioned Condition variable
 
