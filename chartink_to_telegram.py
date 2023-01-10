@@ -67,6 +67,7 @@ def isCorrectTimeToalert():
     CurrentTime = datetime.datetime.now().hour * 60 + datetime.datetime.now().minute
     Alert_Start_Time = 9 * 60 + 20
     Alert_End_Time = 19 * 60 + 50
+    print("current time " + str(CurrentTime) + "  " + " starttime: " + str(Alert_Start_Time) + " end time: " + str(Alert_End_Time))
     
     if (CurrentTime >= Alert_Start_Time and CurrentTime <= Alert_End_Time):        
         return True
