@@ -17,7 +17,7 @@ Alert_Check_Duration = 15*60
 
 BossScanner = "( {cash} ( latest close > latest upper bollinger band( 20 , 2 ) and weekly close > weekly upper bollinger band( 20 , 2 ) and monthly close > monthly upper bollinger band( 20 , 2 ) and latest rsi( 14 ) > 60 and weekly rsi( 14 ) > 60 and monthly rsi( 14 ) > 60 and monthly wma( monthly close , 30 ) > monthly wma( monthly close , 50 ) and 1 month ago  wma( monthly close , 30 )<= 1 month ago  wma( monthly close , 50 ) and monthly wma( monthly close , 30 ) > 60 and monthly wma( monthly close , 50 ) > 60 ) )"
 
-BFSSwing = "( {cash} ( latest close > latest "sum( close  *  volume, 20 ) / sum( volume ,20 )" and 1 day ago  close <= 1 day ago  "sum( close  *  volume, 20 ) / sum( volume ,20 )" and latest close > 100 and latest adx di positive( 14 ) > latest adx di negative( 14 ) and latest volume > latest sma( volume,10 ) and weekly rsi( 14 ) > 60 and weekly close > weekly upper bollinger band( 20 , 2 ) ) )"
+#BFSSwing = "( {cash} ( latest close > latest "sum( close  *  volume, 20 ) / sum( volume ,20 )" and 1 day ago  close <= 1 day ago  "sum( close  *  volume, 20 ) / sum( volume ,20 )" and latest close > 100 and latest adx di positive( 14 ) > latest adx di negative( 14 ) and latest volume > latest sma( volume,10 ) and weekly rsi( 14 ) > 60 and weekly close > weekly upper bollinger band( 20 , 2 ) ) )"
 
 ShortTermBreakout = "( {cash} ( latest max( 5 , latest close ) > 6 days ago max( 120 , latest close ) * 1.05 and latest volume > latest sma( volume,5 ) and latest close > 1 day ago close and latest volume > 100000 and latest close > 200 ) )"
 GemSwing = "( {cash} ( latest close > latest open and 1 day ago close > 1 day ago open and latest ema( close,15 ) > latest sma( close,50 ) and latest macd signal( 26,12,9 ) < latest macd line( 26,12,9 ) and latest volume > 100000 and latest close > latest ema( close,15 ) and latest close > 1 day ago close and latest adx di positive( 14 ) > 20 and latest rsi( 14 ) > 40 and latest close <= latest ema( close,15 ) * 1.07 and latest close > 12 months ago close and latest adx di positive( 14 ) > latest adx di negative( 14 ) and latest macd line( 26,12,9 ) > 0 and latest open * 1.01 < latest close ) ) "
@@ -26,7 +26,7 @@ NayakLion = "( {cash} ( latest close > latest upper bollinger band( 20 , 2 ) and
 RSIDMI = "( {cash} ( latest adx di positive( 14 ) >= latest adx di negative( 14 ) and latest adx di positive( 14 ) >= 20 and 1 day ago rsi( 14 ) > 65 and 2 day ago  rsi( 14 ) <= 65 and latest close > 200 and latest close > 1 day ago close ) )"
 
 conditionArray = { "Boss scanner":BossScanner,
-	           "BFS BTST scanner":BFSSwing,
+	           #"BFS BTST scanner":BFSSwing,
 		   "ShortTermBreakout":ShortTermBreakout,
 		   "GEM Swing Scanner":GemSwing, 
                    "Short Term Uptrend":ShortTermUptrend, 
