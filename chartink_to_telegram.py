@@ -14,6 +14,8 @@ ReceiverTelegramID = '882232390' #my personal id
 Alert_Check_Duration = 15*60
 
 #You need to copy paste condition in below mentioned Condition variable
+#Execute this at Kaushal swing at 9.15 and check the stock to have great move by the end of teh day
+KAUSAL_SWING = "( {cash} ( latest open = latest low and latest macd line( 26,12,9 ) > latest macd signal( 26,12,9 ) and latest close > latest max( 20 , latest open ) and latest volume > 1 day ago volume and latest open > 80 and [0] 30 minute macd line( 26,12,9 ) > [0] 30 minute macd signal( 26,12,9 ) and latest volume > latest sma( volume,10 ) * 1.5 and latest avg true range( 14 ) > 8 and latest adx( 14 ) > 19 ) ) "
 
 BossScanner = "( {cash} ( latest close > latest upper bollinger band( 20 , 2 ) and weekly close > weekly upper bollinger band( 20 , 2 ) and monthly close > monthly upper bollinger band( 20 , 2 ) and latest rsi( 14 ) > 60 and weekly rsi( 14 ) > 60 and monthly rsi( 14 ) > 60 and monthly wma( monthly close , 30 ) > monthly wma( monthly close , 50 ) and 1 month ago  wma( monthly close , 30 )<= 1 month ago  wma( monthly close , 50 ) and monthly wma( monthly close , 30 ) > 60 and monthly wma( monthly close , 50 ) > 60 ) )"
 
@@ -25,7 +27,8 @@ ShortTermUptrend = "( {cash} ( latest close >= 1 day ago max( 20 , latest high )
 NayakLion = "( {cash} ( latest close > latest upper bollinger band( 20 , 2 ) and 1 day ago  close <= 1 day ago  upper bollinger band( 20 , 2 ) and weekly close > weekly upper bollinger band( 20 , 2 ) and 1 week ago  close <= 1 week ago  upper bollinger band( 20 , 2 ) and monthly close > monthly upper bollinger band( 20 , 2 ) and 1 month ago  close <= 1 month ago  upper bollinger band( 20 , 2 ) and latest volume > 100000 ) )"
 RSIDMI = "( {cash} ( latest adx di positive( 14 ) >= latest adx di negative( 14 ) and latest adx di positive( 14 ) >= 20 and 1 day ago rsi( 14 ) > 65 and 2 day ago  rsi( 14 ) <= 65 and latest close > 200 and latest close > 1 day ago close ) )"
 
-conditionArray = { "Boss scanner":BossScanner,
+conditionArray = { "KAUSAL_SWING":KAUSAL_SWING,
+	           "Boss scanner":BossScanner,
 	           "BFS BTST scanner":BFSSwing,
 		   "ShortTermBreakout":ShortTermBreakout,
 		   "GEM Swing Scanner":GemSwing, 
