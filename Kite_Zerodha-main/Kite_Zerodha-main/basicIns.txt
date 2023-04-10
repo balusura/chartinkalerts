@@ -1,0 +1,5 @@
+This folder contains the code for creating an Algo trading for kite zerodha app.
+
+This code is takes=n from https://github.com/TradeViaPython/Kite_Zerodha
+
+youtube channel tradeviapython ---- https://www.youtube.com/watch?v=VytCe70yybI
