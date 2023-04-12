@@ -6,7 +6,7 @@ import csv
 # read the CSV file of stock symbols
 stocks_df = pd.read_csv('indian_stocks.csv')
 # set up the exchange
-exchange = ccxt.nse({
+exchange = ccxt.nse2({
     'enableRateLimit': True,
 })
 # set up the RSI indicator with a period of 14
