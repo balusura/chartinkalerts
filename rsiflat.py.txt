@@ -3,9 +3,9 @@ import pandas as pd
 import numpy as np
 
 # User input
-timeframe = input('Enter the timeframe (e.g. 15m, 1h, 4h): ')
-num_candles = int(input('Enter the number of candles to check: '))
-threshold_percent = float(input('Enter the threshold percentage as a decimal: ')) * 100
+timeframe = 15m #input('Enter the timeframe (e.g. 15m, 1h, 4h): ')
+num_candles = 5 #int(input('Enter the number of candles to check: '))
+threshold_percent = 2 #float(input('Enter the threshold percentage as a decimal: ')) * 100
 
 # Read the symbols from the CSV file
 symbols = pd.read_csv('symbols.csv')['Symbol'].tolist()
