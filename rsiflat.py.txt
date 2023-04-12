@@ -1,0 +1,47 @@
+import yfinance as yf
+import pandas as pd
+import numpy as np
+
+# User input
+timeframe = input('Enter the timeframe (e.g. 15m, 1h, 4h): ')
+num_candles = int(input('Enter the number of candles to check: '))
+threshold_percent = float(input('Enter the threshold percentage as a decimal: ')) * 100
+
+# Read the symbols from the CSV file
+symbols = pd.read_csv('symbols.csv')['Symbol'].tolist()
+
+# Loop over the symbols and check if RSI is flat
+results = []
+for symbol in symbols:
+    # Fetch the historical data
+    df = yf.download(tickers=symbol, interval=timeframe, period='1d')
+
+    # Calculate RSI and WMA(RSI)
+    delta = df['Close'].diff()
+    gain = delta.where(delta > 0, 0)
+    loss = -delta.where(delta < 0, 0)
+    avg_gain = gain.rolling(window=14).mean()
+    avg_loss = loss.rolling(window=14).mean()
+    rs = avg_gain / avg_loss
+    rsi = 100.0 - (100.0 / (1.0 + rs))
+    wma_rsi = rsi.ewm(span=14).mean()
+
+    # Check if the RSI and WMA(RSI) are flat for the specified number of candles
+    is_flat = True
+    for i in range(num_candles):
+        rsi_i = rsi.iloc[-i-1]
+        wma_rsi_i = wma_rsi.iloc[-i-1]
+        if abs(rsi_i - rsi.iloc[-num_candles]) > threshold_percent or abs(wma_rsi_i - wma_rsi.iloc[-num_candles]) > threshold_percent:
+            is_flat = False
+            break
+
+    # Save the result
+    if is_flat:
+        results.append({'symbol': symbol, 'status': 'RSI is flat for the past {} candles with a {}% variation in WMA(RSI)'.format(num_candles, threshold_percent)})
+    else:
+        results.append({'symbol': symbol, 'status': 'RSI is not flat for the past {} candles with a {}% variation in WMA(RSI)'.format(num_candles, threshold_percent)})
+
+# Print the results and save to a CSV file
+df_results = pd.DataFrame(results)
+df_results.to_csv('output.csv', index=False)
+print('Results saved to output.csv')
