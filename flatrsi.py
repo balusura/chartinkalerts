@@ -4,7 +4,7 @@ import ta
 import time
 import csv
 # read the CSV file of stock symbols
-stocks_df = pd.read_csv('indian_stocks.csv')
+stocks_df = pd.read_csv('indian_stcks.csv')
 # set up the exchange
 exchange = ccxt.nse2({
     'enableRateLimit': True,
