@@ -23,10 +23,12 @@ BFSSwing = "( {cash} ( latest close > latest sum( close  *  volume, 20 ) / sum( 
 
 NayakLion = "( {cash} ( latest close > latest upper bollinger band( 20 , 2 ) and 1 day ago  close <= 1 day ago  upper bollinger band( 20 , 2 ) and weekly close > weekly upper bollinger band( 20 , 2 ) and 1 week ago  close <= 1 week ago  upper bollinger band( 20 , 2 ) and monthly close > monthly upper bollinger band( 20 , 2 ) and 1 month ago  close <= 1 month ago  upper bollinger band( 20 , 2 ) and latest volume > 100000 ) )"
 
-Intraday = "( {33489} ( latest close > latest upper bollinger band( 20 , 2 ) and 1 day ago  close <= 1 day ago  upper bollinger band( 20 , 2 ) and latest open = latest low ) )"
+Int_UBB_O_L = "( {33489} ( latest close > latest upper bollinger band( 20 , 2 ) and 1 day ago  close <= 1 day ago  upper bollinger band( 20 , 2 ) and latest open = latest low ) )"
+Int_NCPR_O_L = "( {33489} ( abs( ( ( ( 1 day ago high + 1 day ago low + 1 day ago close / 3 ) + ( ( 1 day ago high + 1 day ago low + 1 day ago close / 3 ) - ( 1 day ago high + 1 day ago low / 2 ) ) - ( 1 day ago high + 1 day ago low / 2 ) ) ) ) < ( 1 day ago close * 0.001 ) and latest close > 300 and( {33489} ( [=1] 15 minute open = [=1] 15 minute high or [=1] 15 minute open = [=1] 15 minute low ) ) ) )"
 
 conditionArray = { 
-	           "Intraday":Intraday
+	           "Int_UBB_O_L":Int_UBB_O_L,
+	           "Int_NCPR_O_L":Int_NCPR_O_L
                    
                  }
 
@@ -77,7 +79,7 @@ def isCorrectTimeToalert():
     
     
 def strategy():
-    while (True):
+    while (isCorrectTimeToalert):
         for itr in conditionArray:
             data = GetDataFromChartink(conditionArray[itr])
 
