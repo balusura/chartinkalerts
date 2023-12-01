@@ -93,7 +93,7 @@ def isCorrectTimeToalert():
     
 def strategy():
     while (isCorrectTimeToalert()):
-        runCount = runCount + 1
+        runCount += 1
         for itr in conditionArray:
             data = GetDataFromChartink(conditionArray[itr])
             if(len(oldDataSet) == 0):
