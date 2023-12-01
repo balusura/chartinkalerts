@@ -28,15 +28,22 @@ conditionArray = {
                  "GOLDEN_ENTRY":GOLDEN_ENTRY
                  }
 oldDataSet = []
+runCount = 0
 
-def CheckForDuplicacy(newData):
+def isDataDuplicated(newData):
     print("oldDataSet is having some data. Let's check for duplicacy")
+    duplicateDataPresent = True
     for ind in newData.index:
         temp = newData['nsecode'][ind]
         if(temp in oldDataSet):
             print(" value present in olddataset")
+            continue
         else:
             print("Value is not in olddataset")
+            duplicateDataPresent = False
+            break
+            
+    return duplicateDataPresent
 
 def GetDataFromChartink(payload):
     payload = {'scan_clause': payload}
@@ -86,6 +93,7 @@ def isCorrectTimeToalert():
     
 def strategy():
     while (isCorrectTimeToalert()):
+        runCount = runCount + 1
         for itr in conditionArray:
             data = GetDataFromChartink(conditionArray[itr])
             if(len(oldDataSet) == 0):
@@ -101,23 +109,24 @@ def strategy():
                 data = data.sort_values(by='per_chg', ascending=False)
                 print(data)
 
-                CheckForDuplicacy(data)
-
                 #data.to_csv("Chartink_result.csv")
                 #SendTelegramFile("Chartink_result.csv")
 
-                dataMessage = "What Alert: " + str(itr) + "\n"  #Give meaningful alert name here
-                current_time = datetime.datetime.now()
-                dataMessage =  dataMessage + "When:" + str(current_time)
-                HeaderData  =  "Stock               "  + " %Chg     "  + " Close     "  #Customize your header here
-                dataMessage = dataMessage + "\n" + HeaderData
+                if ((runCount == 1) or not(isDataDuplicated(data))):
+                    print("Data is not duplicated so lets send a telegram msg")
 
-                for ind in data.index:
-                    dataMessage = dataMessage + "\n" + str(data['nsecode'][ind]).ljust(20) + "        " +  str(data['per_chg'][ind]) + "      " + str(data['close'][ind])
+                    dataMessage = "What Alert: " + str(itr) + "\n"  #Give meaningful alert name here
+                    current_time = datetime.datetime.now()
+                    dataMessage =  dataMessage + "When:" + str(current_time)
+                    HeaderData  =  "Stock               "  + " %Chg     "  + " Close     "  #Customize your header here
+                    dataMessage = dataMessage + "\n" + HeaderData
+
+                    for ind in data.index:
+                        dataMessage = dataMessage + "\n" + str(data['nsecode'][ind]).ljust(20) + "        " +  str(data['per_chg'][ind]) + "      " + str(data['close'][ind])
     
-                print(dataMessage)
+                    print(dataMessage)
 
-                SendMessageToTelegram(dataMessage)        
+                    SendMessageToTelegram(dataMessage)        
             
             
         sleep(Alert_Check_Duration)
