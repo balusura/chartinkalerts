@@ -15,6 +15,7 @@ Alert_Check_Duration = 5*60
 
 #You need to copy paste condition in below mentioned Condition variable
 #Execute this at Kaushal swing at 9.15 and check the stock to have great move by the end of teh day
+CANDLE_PATTERN = "( {cash} ( ( {cash} ( 3 months ago close < 3 months ago open and 2 months ago close < 2 months ago open and 2 months ago low < 3 months ago low and 1 month ago close > 1 month ago open and 1 month ago close > 2 months ago high and 1 month ago rsi( 14 ) > 55 and monthly close > 1 month ago high and market cap > 1000 ) ) ) )"
 GOLDEN_ENTRY = " ( {cash} ( 2 months ago open > 2 months ago lower bollinger band( 20 , 2 ) and 2 months ago low > 2 months ago lower bollinger band( 20 , 2 ) and 2 months ago close < 2 months ago upper bollinger band( 20 , 2 ) and 2 months ago high < 2 months ago upper bollinger band( 20 , 2 ) and 2 months ago close > 2 months ago open and 1 month ago close > 1 month ago open and 1 month ago close > 1 month ago upper bollinger band( 20 , 2 ) and monthly close > 1 month ago high ) )" 
 KAUSAL_SWING = "( {cash} ( latest open = latest low and latest macd line( 26,12,9 ) > latest macd signal( 26,12,9 ) and latest close > latest max( 20 , latest open ) and latest volume > 1 day ago volume and latest open > 80 and [0] 30 minute macd line( 26,12,9 ) > [0] 30 minute macd signal( 26,12,9 ) and latest volume > latest sma( volume,10 ) * 1.5 and latest avg true range( 14 ) > 8 and latest adx( 14 ) > 19 ) ) "
 
@@ -25,6 +26,7 @@ BFSSwing = "( {cash} ( latest close > latest sum( close  *  volume, 20 ) / sum( 
 NayakLion = "( {cash} ( latest close > latest upper bollinger band( 20 , 2 ) and 1 day ago  close <= 1 day ago  upper bollinger band( 20 , 2 ) and weekly close > weekly upper bollinger band( 20 , 2 ) and 1 week ago  close <= 1 week ago  upper bollinger band( 20 , 2 ) and monthly close > monthly upper bollinger band( 20 , 2 ) and 1 month ago  close <= 1 month ago  upper bollinger band( 20 , 2 ) and latest volume > 100000 ) )"
 
 conditionArray = { 
+                 "CANDLE_PATTERN":CANDLE_PATTERN,
                  "GOLDEN_ENTRY":GOLDEN_ENTRY
                  }
 oldDataSet = []
@@ -127,6 +129,10 @@ def strategy():
                     print(dataMessage)
 
                     SendMessageToTelegram(dataMessage)
+
+                    print("old data set is updated with new data")
+                    for val in data.index:
+                        oldDataSet.append(data['nsecode'][val])
                 else:
                     print("Data is duplicated so skipping")        
             
