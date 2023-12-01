@@ -28,7 +28,6 @@ conditionArray = {
                  "GOLDEN_ENTRY":GOLDEN_ENTRY
                  }
 oldDataSet = []
-runCount = 0
 
 def isDataDuplicated(newData):
     print("oldDataSet is having some data. Let's check for duplicacy")
@@ -92,6 +91,7 @@ def isCorrectTimeToalert():
     
     
 def strategy():
+    runCount = 0
     while (isCorrectTimeToalert()):
         runCount += 1
         for itr in conditionArray:
@@ -126,7 +126,9 @@ def strategy():
     
                     print(dataMessage)
 
-                    SendMessageToTelegram(dataMessage)        
+                    SendMessageToTelegram(dataMessage)
+                else:
+                    print("Data is duplicated so skipping")        
             
             
         sleep(Alert_Check_Duration)
