@@ -11,7 +11,7 @@ TelegramBotCredential = '5963732843:AAGhk6iUG_r5-AsN7m16RSbm7SOK_JUepMc'
 ReceiverTelegramID = '882232390' #my personal id
 
 #you can set this variable as per your requirment, its waiting time before next execution (15 minute = 15 * 60)
-Alert_Check_Duration = 20*60
+Alert_Check_Duration = 0*60
 
 #You need to copy paste condition in below mentioned Condition variable
 #Execute this at Kaushal swing at 9.15 and check the stock to have great move by the end of teh day
@@ -30,7 +30,7 @@ conditionArray = {
 oldDataSet = {}
 oldData = {}
 
-def CheckForDuplicacy(oldData, newData):
+def CheckForDuplicacy(newData):
     if (len(oldData)==0):
         print("oldData is null so we should fill it with new data")
         oldData = newData
@@ -107,7 +107,7 @@ def strategy():
                 data = data.sort_values(by='per_chg', ascending=False)
                 print(data)
 
-                CheckForDuplicacy(oldData, data)
+                CheckForDuplicacy(data)
 
                 #data.to_csv("Chartink_result.csv")
                 #SendTelegramFile("Chartink_result.csv")
