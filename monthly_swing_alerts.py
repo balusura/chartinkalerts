@@ -11,7 +11,7 @@ TelegramBotCredential = '5963732843:AAGhk6iUG_r5-AsN7m16RSbm7SOK_JUepMc'
 ReceiverTelegramID = '882232390' #my personal id
 
 #you can set this variable as per your requirment, its waiting time before next execution (15 minute = 15 * 60)
-Alert_Check_Duration = 0*60
+Alert_Check_Duration = 5*60
 
 #You need to copy paste condition in below mentioned Condition variable
 #Execute this at Kaushal swing at 9.15 and check the stock to have great move by the end of teh day
