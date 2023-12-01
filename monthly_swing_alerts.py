@@ -31,22 +31,13 @@ oldDataSet = {}
 oldData = {}
 
 def CheckForDuplicacy(newData):
-    if (len(oldData)==0):
-        print("oldData is null so we should fill it with new data")
-        oldData = newData
-        for ind in oldData.index:
-            oldDataSet[ind] = oldData['nsecode'][ind]
-    else:
-        print("oldData is having some data. Let's check for duplicacy")
-        for ind in newData.index:
-            temp = newData['nsecode'][ind]
-            if("temp" in oldDataSet):
-                print(" value present in olddataset")
-            else:
-                print("Value is not in olddataset")
-
-
-
+    print("oldDataSet is having some data. Let's check for duplicacy")
+    for ind in newData.index:
+        temp = newData['nsecode'][ind]
+        if("temp" in oldDataSet):
+            print(" value present in olddataset")
+        else:
+            print("Value is not in olddataset")
 
 def GetDataFromChartink(payload):
     payload = {'scan_clause': payload}
@@ -98,6 +89,10 @@ def strategy():
     while (isCorrectTimeToalert()):
         for itr in conditionArray:
             data = GetDataFromChartink(conditionArray[itr])
+            if(len(oldDataSet) == 0):
+                print("old data set is null so lets fill")
+                for ind in data.index:
+                    oldDataSet[ind] = data['nsecode'][ind]
 
             if (len(data)==0):
                 print("The data is empty")
