@@ -27,14 +27,13 @@ NayakLion = "( {cash} ( latest close > latest upper bollinger band( 20 , 2 ) and
 conditionArray = { 
                  "GOLDEN_ENTRY":GOLDEN_ENTRY
                  }
-oldDataSet = {}
-oldData = {}
+oldDataSet = []
 
 def CheckForDuplicacy(newData):
     print("oldDataSet is having some data. Let's check for duplicacy")
     for ind in newData.index:
         temp = newData['nsecode'][ind]
-        if("temp" in oldDataSet):
+        if(temp in oldDataSet):
             print(" value present in olddataset")
         else:
             print("Value is not in olddataset")
@@ -82,7 +81,7 @@ def isCorrectTimeToalert():
     if (CurrentTime >= Alert_Start_Time and CurrentTime <= Alert_End_Time):        
         return True
     else:        
-        return False
+        return True
     
     
 def strategy():
@@ -92,7 +91,7 @@ def strategy():
             if(len(oldDataSet) == 0):
                 print("old data set is null so lets fill")
                 for ind in data.index:
-                    oldDataSet[ind] = data['nsecode'][ind]
+                    oldDataSet.append(data['nsecode'][ind])
 
             if (len(data)==0):
                 print("The data is empty")
