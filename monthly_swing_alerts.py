@@ -58,7 +58,7 @@ def GetDataFromChartink(payload):
 
         df = pd.DataFrame()
         for item in r.json()['data']:
-            df = df.append(item, ignore_index=True)
+            df = df._append(item, ignore_index=True)
     return df
     
 def SendMessageToTelegram(Message):
