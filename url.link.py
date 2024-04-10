@@ -80,7 +80,8 @@ def SendMessageToTelegramWithURL(name,url, additional_text=""):
     payload = {
         "chat_id": ReceiverTelegramID,
         "text": message_text,
-        "parse_mode": "Markdown"
+        "parse_mode": "Markdown",
+        "disable_web_page_preview": True  # Disable URL previews
     }
     response = requests.post(send_message_url, json=payload)
 		
