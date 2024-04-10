@@ -135,15 +135,16 @@ def strategy():
                     dataMessage = dataMessage + "\n" + HeaderData
 
                     for ind in data.index:
-			  int i = 0
+                          i = 0
                           stock_name = str(data['nsecode'][ind])
                           stock_url = f"https://in.tradingview.com/chart/?symbol=NSE:{stock_name}"
-			  if i == 0:
-			  	dataText = dataMessage
-			  else:
-				dataText = ""
-			  stockData = " -- " + str(data['per_chg'][ind]) + " ---- " + str(data['close'][ind])
-			  SendMessageToTelegramWithURL(stock_name,stock_url,dataText,stockData)
+                          if i == 0:
+                             dataText = dataMessage
+                          else:
+                             dataText = ""
+                          stockData = " -- " + str(data['per_chg'][ind]) + " ---- " + str(data['close'][ind])
+                          SendMessageToTelegramWithURL(stock_name,stock_url,dataText,stockData)
+                          i = i + 1
                           dataMessage = dataMessage + "\n" + f"[{stock_name}]({stock_url})" + "        " +  str(data['per_chg'][ind]) + "      " + str(data['close'][ind])
                           
                           
