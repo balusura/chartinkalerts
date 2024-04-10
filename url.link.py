@@ -11,7 +11,7 @@ TelegramBotCredential = '5963732843:AAGhk6iUG_r5-AsN7m16RSbm7SOK_JUepMc'
 ReceiverTelegramID = '882232390' #my personal id
 
 #you can set this variable as per your requirment, its waiting time before next execution (15 minute = 15 * 60)
-Alert_Check_Duration = 5*60
+Alert_Check_Duration = 1*60
 
 #You need to copy paste condition in below mentioned Condition variable
 #Execute this at Kaushal swing at 9.15 and check the stock to have great move by the end of teh day
@@ -71,11 +71,10 @@ def SendMessageToTelegram(Message):
         Message = str(e) + ": Exception occur in SendMessageToTelegram"
         print(Message)
 
-def SendMessageToTelegramWithURL(name,url, additional_text=""):
-    message_text = f"[{name}]({url})"
-    if additional_text:
-            message_text += f"\n{additional_text}"
-
+# Function to send message with clickable URL and CMP
+def SendMessageToTelegramWithURL(messages):
+    # Combine all messages into one
+    message_text = "\n".join(messages)
     send_message_url = f"https://api.telegram.org/bot{TelegramBotCredential}/sendMessage"
     payload = {
         "chat_id": ReceiverTelegramID,
@@ -111,6 +110,7 @@ def strategy():
     while (isCorrectTimeToalert()):
         runCount += 1
         for itr in conditionArray:
+            messages = []  # Initialize an empty list to store messages
             data = GetDataFromChartink(conditionArray[itr])
             if(len(oldDataSet) == 0):
                 print("old data set is null so lets fill")
@@ -133,23 +133,27 @@ def strategy():
 
                     dataMessage = "What Alert: " + str(itr) + "\n"  #Give meaningful alert name here
                     current_time = datetime.datetime.now()
-                    dataMessage =  dataMessage + "When:" + str(current_time)
-                    HeaderData  =  "Stock               "  + " %Chg     "  + " Close     "  #Customize your header here
-                    dataMessage = dataMessage + "\n" + HeaderData
+                    formatted_time = current_time.strftime("%d/%m/%y %H:%M")
+                    dataMessage =  dataMessage + "When: " + str(formatted_time)                    
+                    dataMessage = dataMessage + "\n"
                     i = 0
 
                     for ind in data.index:
                           stock_name = str(data['nsecode'][ind])
-                          stock_url = f"https://in.tradingview.com/chart/?symbol=NSE:{stock_name}?"
+                          stock_url = f"https://in.tradingview.com/chart/?symbol=NSE:{stock_name}"
+                          cmp_price = " CMP:" + str(data['close'][ind]) + "  (" + str(data['per_chg'][ind]) + "%)"
                           if i == 0:
                              dataText = dataMessage
                              SendMessageToTelegram(dataText)
                           else:
                              dataText = ""
-                          stockData = "CMP:" + str(data['close'][ind]) + "  (" + str(data['per_chg'][ind]) + ")"
-                          SendMessageToTelegramWithURL(stock_name,stock_url,stockData)
+                          stockData = "CMP:" + str(data['close'][ind]) + "  (" + str(data['per_chg'][ind]) + "%)"
+                          messages.append(f"[{stock_name}]({stock_url}) {cmp_price}")
                           i = i + 1
 
+                    SendMessageToTelegramWithURL(messages)
+                    # Reset the list for the next iteration
+                    messages = []
                     print("old data set is updated with new data")
                     for val in data.index:
                         oldDataSet.append(data['nsecode'][val])
