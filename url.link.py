@@ -127,14 +127,13 @@ def strategy():
                           stock_name = str(data['nsecode'][ind])
                           stock_url = f"https://in.tradingview.com/chart/?symbol=NSE:{stock_name}"
                           dataMessage = dataMessage + "\n" + f"[{stock_name}]({stock_url})" + "        " +  str(data['per_chg'][ind]) + "      " + str(data['close'][ind])
-
                           
-			  url = "https://in.tradingview.com/chart/?symbol=NSE:{stock_name}"			  
-			  hyperlink = f'<a href="{url}" target="_blank">{stock_name}</a>'
+                          url = "https://in.tradingview.com/chart/?symbol=NSE:{stock_name}"			  
+                          hyperlink = f'<a href="{url}" target="_blank">{stock_name}</a>'
                           print(stock_name)
-			  dataMessage = dataMessage + "\n" + stock_name
+                          dataMessage = dataMessage + "\n" + stock_name
   
-			  print(dataMessage)
+                          print(dataMessage)
 
                     SendMessageToTelegram(dataMessage)
 
