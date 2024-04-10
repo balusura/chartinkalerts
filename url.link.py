@@ -71,8 +71,8 @@ def SendMessageToTelegram(Message):
         Message = str(e) + ": Exception occur in SendMessageToTelegram"
         print(Message)
 
-def SendMessageToTelegramWithURL(name,url,dataText,stockData):
-    message_text = dataText + "\n" + f"[{name}]({url})" + stockData
+def SendMessageToTelegramWithURL(name,url):
+    message_text = f"[{name}]({url})"
 
     send_message_url = f"https://api.telegram.org/bot{TelegramBotCredential}/sendMessage"
     payload = {
@@ -140,10 +140,12 @@ def strategy():
                           stock_url = f"https://in.tradingview.com/chart/?symbol=NSE:{stock_name}"
                           if i == 0:
                              dataText = dataMessage
+                             SendMessageToTelegram(dataText)
                           else:
                              dataText = ""
+                          SendMessageToTelegramWithURL(stock_name,stock_url)
                           stockData = " -- " + str(data['per_chg'][ind]) + " ---- " + str(data['close'][ind])
-                          SendMessageToTelegramWithURL(stock_name,stock_url,dataText,stockData)
+                          SendMessageToTelegram(stockData)
                           i = i + 1
                           dataMessage = dataMessage + "\n" + f"[{stock_name}]({stock_url})" + "        " +  str(data['per_chg'][ind]) + "      " + str(data['close'][ind])
                           
