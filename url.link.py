@@ -71,8 +71,10 @@ def SendMessageToTelegram(Message):
         Message = str(e) + ": Exception occur in SendMessageToTelegram"
         print(Message)
 
-def SendMessageToTelegramWithURL(name,url):
+def SendMessageToTelegramWithURL(name,url, additional_text=""):
     message_text = f"[{name}]({url})"
+    if additional_text:
+            message_text += f"\n{additional_text}"
 
     send_message_url = f"https://api.telegram.org/bot{TelegramBotCredential}/sendMessage"
     payload = {
@@ -143,9 +145,10 @@ def strategy():
                              SendMessageToTelegram(dataText)
                           else:
                              dataText = ""
-                          SendMessageToTelegramWithURL(stock_name,stock_url)
+                          #SendMessageToTelegramWithURL(stock_name,stock_url)
                           stockData = " -- " + str(data['per_chg'][ind]) + " ---- " + str(data['close'][ind])
-                          SendMessageToTelegram(stockData)
+                          SendMessageToTelegramWithURL(stock_name,stock_url,stockData)
+                          #SendMessageToTelegram(stockData)
                           i = i + 1
                           dataMessage = dataMessage + "\n" + f"[{stock_name}]({stock_url})" + "        " +  str(data['per_chg'][ind]) + "      " + str(data['close'][ind])
                           
