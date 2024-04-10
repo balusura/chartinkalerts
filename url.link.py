@@ -135,9 +135,9 @@ def strategy():
                     dataMessage =  dataMessage + "When:" + str(current_time)
                     HeaderData  =  "Stock               "  + " %Chg     "  + " Close     "  #Customize your header here
                     dataMessage = dataMessage + "\n" + HeaderData
+                    i = 0
 
                     for ind in data.index:
-                          i = 0
                           stock_name = str(data['nsecode'][ind])
                           stock_url = f"https://in.tradingview.com/chart/?symbol=NSE:{stock_name}?"
                           if i == 0:
@@ -145,7 +145,7 @@ def strategy():
                              SendMessageToTelegram(dataText)
                           else:
                              dataText = ""
-                          stockData = "CMP:" + str(data['close'][ind]) + "(" + str(data['per_chg'][ind]) + ")"
+                          stockData = "CMP:" + str(data['close'][ind]) + "  (" + str(data['per_chg'][ind]) + ")"
                           SendMessageToTelegramWithURL(stock_name,stock_url,stockData)
                           i = i + 1
 
