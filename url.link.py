@@ -69,7 +69,18 @@ def SendMessageToTelegram(Message):
         response = requests.request("POST",Url,params=textdata)
     except Exception as e:
         Message = str(e) + ": Exception occur in SendMessageToTelegram"
-        print(Message)  
+        print(Message)
+
+def SendMessageToTelegramWithURL(name,url):
+    message_text = f"[{name}]({url})"
+
+    send_message_url = f"https://api.telegram.org/bot{TelegramBotCredential}/sendMessage"
+    payload = {
+        "chat_id": ReceiverTelegramID,
+        "text": message_text,
+        "parse_mode": "Markdown"
+    }
+    response = requests.post(send_message_url, json=payload)
 		
 		
 def SendTelegramFile(FileName):
@@ -128,12 +139,7 @@ def strategy():
                           stock_url = f"https://in.tradingview.com/chart/?symbol=NSE:{stock_name}"
                           dataMessage = dataMessage + "\n" + f"[{stock_name}]({stock_url})" + "        " +  str(data['per_chg'][ind]) + "      " + str(data['close'][ind])
                           
-                          url = "https://in.tradingview.com/chart/?symbol=NSE:{stock_name}"			  
-                          hyperlink = f'<a href="{url}" target="_blank">{stock_name}</a>'
-                          print(stock_name)
-                          dataMessage = dataMessage + "\n" + stock_name
-  
-                          print(dataMessage)
+                          SendMessageToTelegramWithURL(stock_name,stock_url)
 
                     SendMessageToTelegram(dataMessage)
 
