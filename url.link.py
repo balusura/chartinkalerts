@@ -139,22 +139,15 @@ def strategy():
                     for ind in data.index:
                           i = 0
                           stock_name = str(data['nsecode'][ind])
-                          stock_url = f"https://in.tradingview.com/chart/?symbol=NSE:{stock_name}"
+                          stock_url = f"https://in.tradingview.com/chart/?symbol=NSE:{stock_name}?"
                           if i == 0:
                              dataText = dataMessage
                              SendMessageToTelegram(dataText)
                           else:
                              dataText = ""
-                          #SendMessageToTelegramWithURL(stock_name,stock_url)
-                          stockData = " -- " + str(data['per_chg'][ind]) + " ---- " + str(data['close'][ind])
+                          stockData = "CMP:" + str(data['close'][ind]) + "(" + str(data['per_chg'][ind]) + ")"
                           SendMessageToTelegramWithURL(stock_name,stock_url,stockData)
-                          #SendMessageToTelegram(stockData)
                           i = i + 1
-                          dataMessage = dataMessage + "\n" + f"[{stock_name}]({stock_url})" + "        " +  str(data['per_chg'][ind]) + "      " + str(data['close'][ind])
-                          
-                          
-
-                    SendMessageToTelegram(dataMessage)
 
                     print("old data set is updated with new data")
                     for val in data.index:
