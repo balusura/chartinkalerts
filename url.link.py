@@ -65,7 +65,7 @@ def SendMessageToTelegram(Message):
     try:
         Url = "https://api.telegram.org/bot" + str(TelegramBotCredential) +  "/sendMessage?chat_id=" + str(ReceiverTelegramID)
         
-        textdata ={ "text":Message}
+        textdata ={ "text":Message, "parse_mode": "Markdown"}
         response = requests.request("POST",Url,params=textdata)
     except Exception as e:
         Message = str(e) + ": Exception occur in SendMessageToTelegram"
