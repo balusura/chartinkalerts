@@ -123,13 +123,12 @@ def strategy():
                     HeaderData  =  "Stock               "  + " %Chg     "  + " Close     "  #Customize your header here
                     dataMessage = dataMessage + "\n" + HeaderData
 
-                    for name in data.index:
-                        print("name: ",str(data['nsecode'][name]))
-
                     for ind in data.index:
-                        dataMessage = dataMessage + "\n" + str(data['nsecode'][ind]).ljust(20) + "        " +  str(data['per_chg'][ind]) + "      " + str(data['close'][ind])
-    
-                    print(dataMessage)
+                          stock_name = str(data['nsecode'][ind])
+                          stock_url = f"https://in.tradingview.com/chart/?symbol=NSE:{stock_name}"
+                          dataMessage = dataMessage + "\n" + f"[{stock_name}]({stock_url})" + "        " +  str(data['per_chg'][ind]) + "      " + str(data['close'][ind])
+
+                          print(dataMessage)
 
                     SendMessageToTelegram(dataMessage)
 
