@@ -104,15 +104,110 @@ def golden_entry(chat_id):
         print(messages)
         SendMessageToTelegramWithURL(messages)
 
+
+def candle_pattern(chat_id):
+    messages = []  # Initialize an empty list to store messages
+    desc = "Monthly 3 candle pattern"
+    bot.send_message(chat_id, f"Monthly 3 candle pattern Scanner \n{desc}")
+    data = GetDataFromChartink(CANDLE_PATTERN)
+    if (len(data)==0):
+        print("The data is empty")
+        SendMessageToTelegram("What Alert: " + "candle pattern" + "\n No data")
+    else:
+        data = data.sort_values(by='per_chg', ascending=False)
+        print(data)
+
+        dataMessage = "What Alert: " + "candle pattern" + "\n"  #Give meaningful alert name here
+        current_time = datetime.datetime.now()
+        formatted_time = current_time.strftime("%d/%m/%y %H:%M")
+        dataMessage =  dataMessage + "When: " + str(formatted_time)                    
+        dataMessage = dataMessage + "\n"
+        i = 0
+        for ind in data.index:
+            stock_name = str(data['nsecode'][ind])
+            stock_url = f"https://in.tradingview.com/chart/?symbol=NSE:{stock_name}"
+            cmp_price = " CMP:" + str(data['close'][ind]) + "  (" + str(data['per_chg'][ind]) + "%)"
+            if i == 0:
+                dataText = dataMessage
+                SendMessageToTelegram(dataText)
+            else:
+                dataText = ""
+            messages.append(f"[{stock_name}]({stock_url}) {cmp_price}")
+            i = i + 1
+    
+        print(messages)
+        SendMessageToTelegramWithURL(messages)
+
+#Boss scanner for BTST
+def boss_btst(chat_id):
+    messages = []  # Initialize an empty list to store messages
+    desc = "boss_btst"
+    bot.send_message(chat_id, f"Boss BTST swing Scanner \n{desc}")
+    data = GetDataFromChartink(BossScanner)
+    if (len(data)==0):
+        print("The data is empty")
+        SendMessageToTelegram("What Alert: " + "boss_btst" + "\n No data")
+    else:
+        data = data.sort_values(by='per_chg', ascending=False)
+        print(data)
+
+        dataMessage = "What Alert: " + "boss_btst" + "\n"  #Give meaningful alert name here
+        current_time = datetime.datetime.now()
+        formatted_time = current_time.strftime("%d/%m/%y %H:%M")
+        dataMessage =  dataMessage + "When: " + str(formatted_time)                    
+        dataMessage = dataMessage + "\n"
+        i = 0
+        for ind in data.index:
+            stock_name = str(data['nsecode'][ind])
+            stock_url = f"https://in.tradingview.com/chart/?symbol=NSE:{stock_name}"
+            cmp_price = " CMP:" + str(data['close'][ind]) + "  (" + str(data['per_chg'][ind]) + "%)"
+            if i == 0:
+                dataText = dataMessage
+                SendMessageToTelegram(dataText)
+            else:
+                dataText = ""
+            messages.append(f"[{stock_name}]({stock_url}) {cmp_price}")
+            i = i + 1
+    
+        print(messages)
+        SendMessageToTelegramWithURL(messages)
+
 # Replace 'YOUR_API_TOKEN' with your bot's API token
 bot = telebot.TeleBot(TelegramBotCredential)
+# Define the list of commands
+commands = [
+    {'command': 'start', 'description': 'Start the bot'},
+    {'command': 'golden_entry', 'description': 'Monthly BB blast'},
+    {'command': 'candle_pattern', 'description': 'Monthly 3 candle pattern'},
+    {'command': 'boss_btst', 'description': 'Boss scanner BTST'},
+]
 
 # Adding custom menu name
 @bot.message_handler(commands=['golden_entry'])
 def golden_entry_menu(message):
     golden_entry(message.chat.id)
 
+# 3 candle pattern
+@bot.message_handler(commands=['candle_pattern'])
+def candle_pattern_menu(message):
+    candle_pattern(message.chat.id)
+
+# Boss BTST
+@bot.message_handler(commands=['boss_btst'])
+def boss_btst_menu(message):
+    boss_btst(message.chat.id)
+
 def main():
+    
+    # Send a POST request to set the bot's commands
+    response = requests.post(f'https://api.telegram.org/bot{TelegramBotCredential}/setMyCommands', json={'commands': commands})
+
+    # Check if the request was successful
+    if response.ok:
+        print("Bot commands updated successfully!")
+    else:
+        print("Failed to update bot commands:", response.text)
+        
     # Start the bot
     print("Bot is Running...")
     bot.polling()
