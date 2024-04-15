@@ -29,8 +29,8 @@ BFSIntradayvwap = "( {33489} ( latest close > ( 1 day ago close + ( 1 day ago cl
 InsiderCamrilla = "( {33489} ( 1 day ago {custom_indicator_117647_start}\"close + ( ( 1.1 * (  high -  low ) ) / 2 )\"{custom_indicator_117647_end} < 2 days ago {custom_indicator_117648_start}\"close + ( ( 1.1 * (  high -  low ) ) / 4 )\"{custom_indicator_117648_end} and 1 day ago {custom_indicator_117646_start}\"close - ( ( 1.1 * (  high -  low ) ) / 2 )\"{custom_indicator_117646_end} > 2 days ago {custom_indicator_117643_start}\"close - ( ( 1.1 * (  high -  low ) ) / 4 )\"{custom_indicator_117643_end} and( {cash} ( [0] 5 minute close > latest {custom_indicator_117647_start}\"close + ( ( 1.1 * (  high -  low ) ) / 2 )\"{custom_indicator_117647_end} and [ -1 ] 5 minute close <= 1 day ago  {custom_indicator_117647_start}\"close + ( ( 1.1 * (  high -  low ) ) / 2 )\"{custom_indicator_117647_end} or [0] 5 minute close < latest {custom_indicator_117646_start}\"close - ( ( 1.1 * (  high -  low ) ) / 2 )\"{custom_indicator_117646_end} and [ -1 ] 5 minute close >= 1 day ago  {custom_indicator_117646_start}\"close - ( ( 1.1 * (  high -  low ) ) / 2 )\"{custom_indicator_117646_end} ) ) ) )"
 
 conditionArray = { 
-                 "CANDLE_PATTERN":CANDLE_PATTERN,
-                 "GOLDEN_ENTRY":GOLDEN_ENTRY,
+                 #"CANDLE_PATTERN":CANDLE_PATTERN,
+                 #"GOLDEN_ENTRY":GOLDEN_ENTRY,
                  "virat100bullish":virat100bullish,
                  "BFSIntradayvwap":BFSIntradayvwap
                  }
