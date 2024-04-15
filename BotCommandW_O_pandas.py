@@ -61,81 +61,58 @@ def SendMessageToTelegramWithURL(messages):
     }
     response = requests.post(send_message_url, json=payload)
 
-def golden_entry(chat_id):
+def header(headText, chat_id):
+    current_time = datetime.datetime.now()
+    formatted_time = current_time.strftime("%d/%m/%y %H:%M")
+    desc = headText + "\n"
+    desc = desc + "Scanned at: " + str(formatted_time)
+    bot.send_message(chat_id, f"{desc}")
+
+def sendData(data):
     messages = []  # Initialize an empty list to store messages
-    desc = "Monthly BB Blast"
-    bot.send_message(chat_id, f"Golden-Entry Scanner \n{desc}")
+    if len(data) == 0:
+        print("The data is empty")
+        SendMessageToTelegram("\n No data")
+    else:
+        data = sorted(data, key=lambda x: x['per_chg'], reverse=True)
+        #print(data)
+        
+        for item in data:
+            stock_name = str(item['nsecode'])
+            stock_url = f"https://in.tradingview.com/chart/?symbol=NSE:{stock_name}"
+            cmp_price = f" CMP:{item['close']}  ({item['per_chg']}%)"
+            messages.append(f"[{stock_name}]({stock_url}) {cmp_price}")
+        
+        SendMessageToTelegramWithURL(messages)
+    
+     
+###Define all the new functions over here
+def golden_entry(chat_id):    
+    headText_ = "Golden_Entry - Monthly BB Blast"
+    #Print the header
+    header(headText_, chat_id)
+    #Grab the data
     data = GetDataFromChartink(GOLDEN_ENTRY)
-    if len(data) == 0:
-        print("The data is empty")
-        SendMessageToTelegram("What Alert: " + "golden_entry" + "\n No data")
-    else:
-        data = sorted(data, key=lambda x: x['per_chg'], reverse=True)
-        print(data)
+    #Send the data
+    sendData(data)
 
-        dataMessage = "What Alert: " + "golden_entry" + "\n"  #Give meaningful alert name here
-        current_time = datetime.datetime.now()
-        formatted_time = current_time.strftime("%d/%m/%y %H:%M")
-        dataMessage =  dataMessage + "When: " + str(formatted_time)                    
-        dataMessage = dataMessage + "\n"
-        for item in data:
-            stock_name = str(item['nsecode'])
-            stock_url = f"https://in.tradingview.com/chart/?symbol=NSE:{stock_name}"
-            cmp_price = f" CMP:{item['close']}  ({item['per_chg']}%)"
-            messages.append(f"[{stock_name}]({stock_url}) {cmp_price}")
-        
-        SendMessageToTelegramWithURL(messages)
-
-def candle_pattern(chat_id):
-    messages = []  # Initialize an empty list to store messages
-    desc = "Monthly 3 candle pattern"
-    bot.send_message(chat_id, f"Monthly 3 candle pattern Scanner \n{desc}")
+def candle_pattern(chat_id):    
+    headText_ = "Monthly 3 candle pattern"
+    #Print the header
+    header(headText_, chat_id)
+    #Grab the data
     data = GetDataFromChartink(CANDLE_PATTERN)
-    if len(data) == 0:
-        print("The data is empty")
-        SendMessageToTelegram("What Alert: " + "candle pattern" + "\n No data")
-    else:
-        data = sorted(data, key=lambda x: x['per_chg'], reverse=True)
-        print(data)
+    #Send the data
+    sendData(data)
 
-        dataMessage = "What Alert: " + "candle pattern" + "\n"  #Give meaningful alert name here
-        current_time = datetime.datetime.now()
-        formatted_time = current_time.strftime("%d/%m/%y %H:%M")
-        dataMessage =  dataMessage + "When: " + str(formatted_time)                    
-        dataMessage = dataMessage + "\n"
-        for item in data:
-            stock_name = str(item['nsecode'])
-            stock_url = f"https://in.tradingview.com/chart/?symbol=NSE:{stock_name}"
-            cmp_price = f" CMP:{item['close']}  ({item['per_chg']}%)"
-            messages.append(f"[{stock_name}]({stock_url}) {cmp_price}")
-        
-        SendMessageToTelegramWithURL(messages)
-
-#Boss scanner for BTST
-def boss_btst(chat_id):
-    messages = []  # Initialize an empty list to store messages
-    desc = "boss_btst"
-    bot.send_message(chat_id, f"Boss BTST swing Scanner \n{desc}")
+def boss_btst(chat_id):    
+    headText_ = "Boss BTST swing Scanner"
+    #Print the header
+    header(headText_, chat_id)
+    #Grab the data
     data = GetDataFromChartink(BossScanner)
-    if len(data) == 0:
-        print("The data is empty")
-        SendMessageToTelegram("What Alert: " + "boss_btst" + "\n No data")
-    else:
-        data = sorted(data, key=lambda x: x['per_chg'], reverse=True)
-        print(data)
-
-        dataMessage = "What Alert: " + "boss_btst" + "\n"  #Give meaningful alert name here
-        current_time = datetime.datetime.now()
-        formatted_time = current_time.strftime("%d/%m/%y %H:%M")
-        dataMessage =  dataMessage + "When: " + str(formatted_time)                    
-        dataMessage = dataMessage + "\n"
-        for item in data:
-            stock_name = str(item['nsecode'])
-            stock_url = f"https://in.tradingview.com/chart/?symbol=NSE:{stock_name}"
-            cmp_price = f" CMP:{item['close']}  ({item['per_chg']}%)"
-            messages.append(f"[{stock_name}]({stock_url}) {cmp_price}")
-        
-        SendMessageToTelegramWithURL(messages)
+    #Send the data
+    sendData(data)
 
 # Replace 'YOUR_API_TOKEN' with your bot's API token
 bot = telebot.TeleBot(TelegramBotCredential)
@@ -162,6 +139,9 @@ def candle_pattern_menu(message):
 @bot.message_handler(commands=['boss_btst'])
 def boss_btst_menu(message):
     boss_btst(message.chat.id)
+
+
+####----Main Function----##########
 
 def main():
     # Send a POST request to set the bot's commands
